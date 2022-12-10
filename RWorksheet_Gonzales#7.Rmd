@@ -1,0 +1,264 @@
+---
+title: "RWorksheet7_Gonzales"
+author: "Mamerto F. Gonzales Jr."
+date: "2022-12-10"
+output:
+  pdf_document: default
+---
+
+#Worksheet for R Programming
+
+Instructions:
+
+• Use RStudio or the RStudio Cloud accomplish this worksheet.
+• Save the R script as RWorksheet_lastname#7a.R.
+• On your own GitHub repository, push the R script, the Rmd file, as well as this
+pdf worksheet to the repo you have created before.
+• Do not forget to comment your Git repo on our VLE
+• Accomplish this worksheet by answering the questions being asked and writing
+the code manually.
+
+\hfill\break
+
+Basic Statistics
+
+1. Create a data frame for the table below.
+```{R}
+Student_Scores <- data.frame (c(Students <- 1:10), c(Pre_test <- 55, 54, 47, 57, 51, 61, 57, 54, 63, 58), c(Post_test <- 61, 60, 56, 63, 56, 63, 59, 56, 62, 61))
+colnames(Student_Scores) <- c('Students','Pre-test','Post-test')
+Student_Scores
+```
+
+a. Compute the descriptive statistics using different packages (Hmisc and pastecs).
+Write the codes and its result.
+```{R}
+library(Hmisc)
+library(pastecs)
+describe(Student_Scores)
+stat.desc(Student_Scores)
+```
+
+2. The Department of Agriculture was studying the effects of several levels of a
+fertilizer on the growth of a plant. For some analyses, it might be useful to convert
+the fertilizer levels to an ordered factor.
+• The data were 10,10,10, 20,20,50,10,20,10,50,20,50,20,10.
+
+```{R}
+AgriDep <- c(10,10,10,20,20,50,10,
+             20,10,50,20,50,20,10)
+```
+
+a. Write the codes and describe the result.
+
+```{R}
+AgriDep_Order <- sort(AgriDep, decreasing = FALSE)
+AgriDep_Order
+describe(AgriDep_Order)
+```
+
+3. Abdul Hassan, president of Floor Coverings Unlimited, has asked you to study
+the exercise levels undertaken by 10 subjects were “l”, “n”, “n”, “i”, “l” ,
+“l”, “n”, “n”, “i”, “l” ; n=none, l=light, i=intense
+
+```{R}
+Excer_Levels <- c("l","n","n","i","l","l","n","n","i","l")
+class(Excer_Levels)
+```
+
+a. What is the best way to represent this in R?
+
+```{R}
+Represent <- factor(Excer_Levels)
+Represent
+```
+
+4. Sample of 30 tax accountants from all the states and territories of Australia and
+their individual state of origin is specified by a character vector of state mnemonics 
+as:
+
+```{R}
+state <- c("tas", "sa", "qld", "nsw", "nsw", "nt", "wa", "wa", "qld",
+"vic", "nsw", "vic", "qld", "qld", "sa", "tas", "sa", "nt",
+"wa", "vic", "qld", "nsw", "nsw", "wa", "sa", "act", "nsw",
+"vic", "vic", "act")
+```
+
+a. Apply the factor function and factor level. Describe the results.
+
+```{R}
+Results <- factor(state)
+Results
+```
+
+5. From #4 - continuation:
+
+• Suppose we have the incomes of the same tax accountants in another vector (in
+suitably large units of money)
+
+```{R}
+incomes <- c(60, 49, 40, 61, 64, 60, 59, 54,
+62, 69, 70, 42, 56, 61, 61, 61, 58, 51, 48,
+65, 49, 49, 41, 48, 52, 46, 59, 46, 58, 43)
+```
+
+a. Calculate the sample mean income for each state we can now use the special
+function tapply():
+Example: giving a means vector with the components labelled by the levels
+
+incmeans <- tapply(incomes, statef, mean)
+
+Note: The function tapply() is used to apply a function, here mean(), to each group
+of components of the first argument, here incomes, defined by the levels of the second
+component, here statef 2
+that tapply() also works in this case when its second argument is not a factor,
+• e.g., ‘tapply(incomes, state)’, and this is true for quite a few other functions,
+since arguments are coerced to factors when necessary (using as.factor()).
+
+```{R}
+ApplyT <- tapply(state, incomes, mean)
+ApplyT
+```
+b. Copy the results and interpret.
+
+- 40 41 42 43 46 48 49 51 52 54 56 58 59 60 61 62 64 65 69 70 
+NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA 
+
+6. Calculate the standard errors of the state income means (refer again to number 3)
+
+```{R}
+stdError <- function(x) sqrt(var(x)/length(x))
+```
+
+Note: After this assignment, the standard errors are calculated by:
+
+incster <- tapply(incomes, statef, stdError)
+
+```{R}
+CalcLength <- length(ApplyT)
+CalcSD <- sd(ApplyT)
+CalcAll <- CalcLength/sqrt(CalcSD)
+CalcAll
+```
+
+a. What is the standard error? Write the codes.
+
+-[1] NA
+
+b. Interpret the result.
+
+-Argument is not numeric or logical
+
+7. Use the titanic dataset.
+
+```{R}
+Sob <- data.frame(Titanic)
+```
+
+a. subset the titatic dataset of those who survived and not survived. Show the
+codes and its result.
+
+```{R}
+Sobset <- subset(Sob, select = "Survived")
+Sobset
+```
+
+8. The data sets are about the breast cancer Wisconsin. The samples arrive periodically as Dr. Wolberg reports his clinical cases. The database therefore reflects this
+chronological grouping of the data. You can create this dataset in Microsoft Excel.
+Figure 2: Breast Cancer 1
+Figure 3: Breast Cancer 2
+Figure 4: Breast Cancer 3
+
+a. describe what is the dataset all about.
+
+- The dataset s all about Breast Cancer.
+
+b. Import the data from MS Excel. Copy the codes.
+
+```{R}
+library("readxl")
+BC_Data <- read_excel("C:\\Users\\User\\Documents\\Worksheet 7//Breast Cancer.xlsx")
+BC_Data
+```
+
+c. Compute the descriptive statistics using different packages. Find the values of:
+c.1 Standard error of the mean for clump thickness.
+
+```{R}
+ClumpThickness <- length(BC_Data$`CL. thickness`)
+ClumpThickness1 <- sd(BC_Data$`CL. thickness`)
+ClumpThickness2 <- ClumpThickness1/sqrt(BC_Data$`CL. thickness`)
+ClumpThickness2
+```
+
+c.2 Coefficient of variability for Marginal Adhesion.
+
+```{R}
+VariabilityMA <- sd(BC_Data$'Marg. Adhesion') / mean(BC_Data$'Marg. Adhesion')* 100
+VariabilityMA
+```
+
+c.3 Number of null values of Bare Nuclei.
+
+```{R}
+VariabilityMA <- subset(BC_Data,'Bare. Nucle' == "NA")
+```
+
+c.4 Mean and standard deviation for Bland Chromatin
+
+```{R}
+mean(BC_Data$'Bl. Cromatin')
+sd(BC_Data$'Bl. Cromatin')
+```
+c.5 Confidence interval of the mean for Uniformity of Cell Shape
+
+```{R}
+UniformMean <- mean(BC_Data$'Cell Shape')
+UniformMean
+CellLength <- length(BC_Data$'Cell Shape')
+CellShape <- sd(BC_Data$'Cell Shape')
+ShapeCell <- CellShape/sqrt(CellLength)
+ShapeCell
+D = 0.05
+numE = CellLength - 1
+numF = qt(p = D/ 2, df = numE,lower.tail = F)
+numF
+numG <- numF * numE
+
+#Lower
+numH <- UniformMean - numG
+
+#Upper
+numI <- UniformMean + numG
+
+c(numH,numI)
+```
+
+d. How many attributes?
+
+```{R}
+attributes(BC_Data)
+```
+
+e. Find the percentage of respondents who are malignant. Interpret the results.
+
+```{R}
+BCSubset <- subset(BC_Data, Class == "maligant")
+BCSubset
+```
+
+- 17 Malignant Respondents.
+
+9. Export the data abalone to the Microsoft excel file. Copy the codes.
+
+```{R}
+library("AppliedPredictiveModeling")
+data("abalone")
+View(abalone)
+head(abalone)
+summary(abalone)
+```
+
+```{R}
+library(xlsx)
+write.xlsx("abalone","C:\\Users\\User\\Documents\\Worksheet 7//abalone.xlsx")
+```
